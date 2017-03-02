@@ -1,4 +1,5 @@
 from rest_framework import permissions
+from rest_framework.compat import is_authenticated
 
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
@@ -14,6 +15,20 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 
         # Write permissions are only allowed to the owner of the snippet.
         return obj.owner == request.user
+
+
+class IsSuperUserOrAuthenticated(permissions.BasePermission):
+    """
+    Custom permission to only allow super user to edit and allow regular user to read
+    """
+
+    def has_permission(self, request, view):
+        # Read permissions are allowed to authenticated user
+        if request.method in permissions.SAFE_METHODS:
+            return request.user and is_authenticated(request.user)
+
+        # Write permissions are only allowed to super user.
+        return request.user and request.user.is_staff
 
 
 class IsAuthenticatedOrCreate(permissions.IsAuthenticated):

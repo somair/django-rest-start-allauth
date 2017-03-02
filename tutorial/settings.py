@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_swagger',
     'rest_framework_docs',
-    'oauth2_provider',
     'corsheaders',
     'snippets.apps.SnippetsConfig',
     'experiments.apps.ExperimentsConfig',
@@ -57,19 +56,13 @@ INSTALLED_APPS = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    'oauth2_provider.backends.OAuth2Backend',
-    # Uncomment following if you want to access the admin
     'django.contrib.auth.backends.ModelBackend',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    # If you use SessionAuthenticationMiddleware, be sure it appears before OAuth2TokenMiddleware.
-    # SessionAuthenticationMiddleware is NOT required for using
-    # django-oauth-toolkit.
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'oauth2_provider.middleware.OAuth2TokenMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -192,7 +185,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # https://django-rest-swagger.readthedocs.io/en/latest/settings/
 SWAGGER_SETTINGS = {
-    'USE_SESSION_AUTH': False,
+    'USE_SESSION_AUTH': True,
     'SECURITY_DEFINITIONS': {
         # 'basic': {
         #     'type': 'basic'
@@ -204,7 +197,7 @@ SWAGGER_SETTINGS = {
         },
     },
     'SHOW_REQUEST_HEADERS': True,
-    'JSON_EDITOR': True,
+    'JSON_EDITOR': False,
     'DOC_EXPANSION': None,
     "exclude_namespaces": ["swagger_view"],
 }
@@ -216,17 +209,13 @@ LOGIN_REDIRECT_URL = '/'
 # http://www.django-rest-framework.org/tutorial/5-relationships-and-hyperlinked-apis/
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'oauth2_provider.ext.rest_framework.OAuth2Authentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication'
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
     'PAGE_SIZE': 10
-}
-
-OAUTH2_PROVIDER = {
-    # this is the list of available scopes
-    'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'groups': 'Access to your groups'}
 }
 
 API_NAME = 'My Web API'

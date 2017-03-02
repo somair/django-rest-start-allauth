@@ -2,7 +2,7 @@ from django.conf.urls import url, include
 from rest_framework.routers import DefaultRouter, SimpleRouter
 from django.views.generic import RedirectView
 
-from apiAdmin import views, views_oauth2
+from apiAdmin import views
 
 # API endpoints for UserViewSet and GroupViewSet
 router = SimpleRouter()
@@ -16,11 +16,8 @@ urlpatterns = [
     # API endpoints for UserViewSet and GroupViewSet
     url(r'^administration/', include(router.urls)),
 
-    # Token
-    url(r'^administration/token/?$', views_oauth2.tokenView.as_view(), name="access-token"),
-
     # sign up end point
-    url(r'^administration/signup/$', views.SignUp.as_view(), name="sign-up"),
+    url(r'^administration/user-register/$', views.UserRegister.as_view(), name="register"),
 
     # redirect root to swagger UI
     url(r'^$', RedirectView.as_view(url='/swagger/')),

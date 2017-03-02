@@ -10,11 +10,9 @@ from rest_framework.reverse import reverse
 
 from rest_framework import serializers, viewsets
 
-from oauth2_provider.ext.rest_framework import TokenHasReadWriteScope, TokenHasScope
+from security.permissions import IsAuthenticatedOrCreate, IsSuperUserOrAuthenticated
 
-from security.permissions import IsAuthenticatedOrCreate
-
-from apiAdmin.serializers import SignUpSerializer, UserSerializer, GroupSerializer
+from apiAdmin.serializers import UserRegisterSerializer, UserSerializer, GroupSerializer
 
 
 @api_view(['GET'])
@@ -28,12 +26,12 @@ def api_root(request, format=None):
     })
 
 
-class SignUp(generics.CreateAPIView):
+class UserRegister(generics.CreateAPIView):
     """
-    Sign up or register as a new user
+    Register a new user
     """
     queryset = User.objects.all()
-    serializer_class = SignUpSerializer
+    serializer_class = UserRegisterSerializer
     permission_classes = (IsAuthenticatedOrCreate,)
 
 
@@ -41,8 +39,7 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     List or modify users
     """
-    permission_classes = [
-        permissions.IsAuthenticatedOrReadOnly, TokenHasReadWriteScope]
+    permission_classes = [IsSuperUserOrAuthenticated, ]
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
@@ -51,7 +48,7 @@ class GroupViewSet(viewsets.ModelViewSet):
     """
     List or modify groups
     """
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, TokenHasScope]
+    permission_classes = [IsSuperUserOrAuthenticated, ]
     required_scopes = ['groups']
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
