@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     'rest_framework_swagger',
     'rest_framework_docs',
     'corsheaders',
@@ -55,9 +56,28 @@ INSTALLED_APPS = [
     'apiAdmin.apps.ApiAdminConfig',
 ]
 
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-]
+INSTALLED_APPS += (
+    # The Django sites framework is required
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    # Login via social accounts
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.facebook',
+    # 'allauth.socialaccount.providers.twitter',
+    'rest_auth.registration',
+    'rest_auth',
+)
+
+# following is added to enable registration with email instead of username
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    "django.contrib.auth.backends.ModelBackend",
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -200,16 +220,18 @@ SWAGGER_SETTINGS = {
     'JSON_EDITOR': False,
     'DOC_EXPANSION': None,
     "exclude_namespaces": ["swagger_view"],
+    'LOGIN_URL': 'account_login',
+    'LOGOUT_URL': 'account_logout',
 }
 
 LOGIN_URL = 'rest_framework:login'
 LOGOUT_URL = 'rest_framework:logout'
-LOGIN_REDIRECT_URL = '/'
 
 # http://www.django-rest-framework.org/tutorial/5-relationships-and-hyperlinked-apis/
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.BasicAuthentication'
     ),
     'DEFAULT_PERMISSION_CLASSES': (
@@ -221,6 +243,7 @@ REST_FRAMEWORK = {
 API_NAME = 'My Web API'
 
 # email
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 try:
     EMAIL_HOST = 'smtp.sendgrid.net'
     EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
@@ -230,5 +253,18 @@ try:
 except KeyError:
     raise Exception('Email service information missing.')
 
+SITE_ID = 1
 
+REST_USE_JWT = False
+REST_SESSION_LOGIN = True  # doesn't seem to harm anything
 
+ACCOUNT_AUTHENTICATION_METHOD = 'email'  # ”username” | “email” | “username_email”
+ACCOUNT_EMAIL_VERIFICATION = 'optional'  # 'mandatory'
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_REQUIRED = True   # must be True if 'email' authentication is used
+ACCOUNT_USERNAME_REQUIRED = False
+LOGIN_REDIRECT_URL = '/'
+
+SOCIALACCOUNT_EMAIL_VERIFICATION = "none"
+SOCIALACCOUNT_EMAIL_REQUIRED = True
+SOCIALACCOUNT_QUERY_EMAIL = True

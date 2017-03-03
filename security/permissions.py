@@ -1,5 +1,6 @@
 from rest_framework import permissions
 from rest_framework.compat import is_authenticated
+from rest_framework.authentication import SessionAuthentication
 
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
@@ -40,3 +41,9 @@ class IsAuthenticatedOrCreate(permissions.IsAuthenticated):
         if request.method == 'POST':
             return True
         return super(IsAuthenticatedOrCreate, self).has_permission(request, view)
+
+
+class EverybodyCanAuthentication(SessionAuthentication):
+
+    def authenticate(self, request):
+        return None

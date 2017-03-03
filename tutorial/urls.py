@@ -16,10 +16,13 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
 
 from rest_framework import routers
 from rest_framework_swagger.views import get_swagger_view
 from rest_framework.schemas import get_schema_view
+
+from apiAdmin.views_social import GoogleLogin, FacebookLogin  # , TwitterLogin
 
 # from .swagger import SwaggerSchemaView
 
@@ -52,6 +55,17 @@ urlpatterns = [
     # API schemas
     # http://www.django-rest-framework.org/tutorial/7-schemas-and-client-libraries/
     url(r'^schema/$', schema_view),
+
+    # rest-auth
+    url(r'^rest-auth/', include('rest_auth.urls')),
+    url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
+    url(r'^rest-auth/google/$', GoogleLogin.as_view(), name='google_login'),
+    url(r'^rest-auth/facebook/$', FacebookLogin.as_view(), name='fb_login'),
+    # url(r'^rest-auth/twitter/$', TwitterLogin.as_view(), name='twitter_login'),
+
+    # allauth
+    url(r'^accounts/', include('allauth.urls')),
+    url(r'^', include('django.contrib.auth.urls')),
 
     # App 'snippets'
     url(r'^', include('snippets.urls')),
