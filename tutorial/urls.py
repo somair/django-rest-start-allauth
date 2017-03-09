@@ -17,6 +17,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import RedirectView
 
 from rest_framework import routers
 from rest_framework_swagger.views import get_swagger_view
@@ -75,4 +76,7 @@ urlpatterns = [
 
     # App 'apiAdmin'
     url(r'^', include('apiAdmin.urls')),
+
+    # redirect root to swagger UI
+    url(r'^$', RedirectView.as_view(url='/swagger/')),
 ]

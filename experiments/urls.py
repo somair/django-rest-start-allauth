@@ -18,3 +18,6 @@ urlpatterns = [
     # email
     url(r'^experiments/email/$', views.SendSimpleEmailMessssage.as_view()),
 ]
+
+# support optional format suffixes
+# urlpatterns = format_suffix_patterns(urlpatterns)

@@ -224,8 +224,9 @@ SWAGGER_SETTINGS = {
     'LOGOUT_URL': 'account_logout',
 }
 
-LOGIN_URL = 'rest_framework:login'
-LOGOUT_URL = 'rest_framework:logout'
+# use allauth UI
+# LOGIN_URL = 'rest_framework:login'
+# LOGOUT_URL = 'rest_framework:logout'
 
 # http://www.django-rest-framework.org/tutorial/5-relationships-and-hyperlinked-apis/
 REST_FRAMEWORK = {
@@ -237,12 +238,14 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
+    'URL_FORMAT_OVERRIDE': 'format'  # default 'format'; swagger is not working with None
 }
 
 API_NAME = 'My Web API'
 
 # email
+"""
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 try:
     EMAIL_HOST = 'smtp.sendgrid.net'
@@ -250,15 +253,20 @@ try:
     EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
     EMAIL_PORT = 587
     EMAIL_USE_TLS = True
+    DEFAULT_FROM_EMAIL = os.environ['DEFAULT_FROM_EMAIL']
 except KeyError:
     raise Exception('Email service information missing.')
+"""
+EMAIL_BACKEND = "sgbackend.SendGridBackend"
+SENDGRID_API_KEY = os.environ['SENDGRID_API_KEY']
 
 SITE_ID = 1
 
 REST_USE_JWT = False
 REST_SESSION_LOGIN = True  # doesn't seem to harm anything
 
-ACCOUNT_AUTHENTICATION_METHOD = 'email'  # ”username” | “email” | “username_email”
+# ”username” | “email” | “username_email”
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'optional'  # 'mandatory'
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_REQUIRED = True   # must be True if 'email' authentication is used

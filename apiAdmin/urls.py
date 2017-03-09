@@ -18,8 +18,5 @@ urlpatterns = [
 
     # sign up end point
     url(r'^administration/user-register/$', views.UserRegister.as_view(), name="register"),
-
-    # redirect root to swagger UI
-    url(r'^$', RedirectView.as_view(url='/swagger/')),
 ]
 
