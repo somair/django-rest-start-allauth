@@ -4,6 +4,7 @@ A starter project template to build a robust RESTful Web API using [Django REST 
 
 ## Features
 
+- Base on [django-allauth](https://github.com/pennersr/django-allauth)
 - Based on [Django REST framework official tutorial](http://www.django-rest-framework.org/tutorial/quickstart/).
 - Based on - Heroku [python-getting-started](https://github.com/heroku/python-getting-started).
 - Production-ready configuration for Static Files, Database Settings, Gunicorn, etc.
