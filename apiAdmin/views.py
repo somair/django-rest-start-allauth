@@ -8,6 +8,9 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
+from rest_framework.authentication import TokenAuthentication
+from rest_auth.registration.views import LoginView
+
 from rest_framework import serializers, viewsets
 
 from security.permissions import IsAuthenticatedOrCreate, IsSuperUserOrAuthenticated
@@ -52,3 +55,11 @@ class GroupViewSet(viewsets.ModelViewSet):
     required_scopes = ['groups']
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+
+
+class LoginViewCustom(LoginView):
+    """
+    see https://github.com/Tivix/django-rest-auth/issues/159#issuecomment-173909852
+    fix problem "CSRF Failed: CSRF token missing or incorrect."
+    """
+    authentication_classes = (TokenAuthentication,)

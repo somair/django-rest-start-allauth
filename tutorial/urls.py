@@ -24,6 +24,7 @@ from rest_framework_swagger.views import get_swagger_view
 from rest_framework.schemas import get_schema_view
 
 from apiAdmin.views_social import GoogleLogin, FacebookLogin  # , TwitterLogin
+from apiAdmin.views import LoginViewCustom
 
 # from .swagger import SwaggerSchemaView
 
@@ -58,6 +59,8 @@ urlpatterns = [
     url(r'^schema/$', schema_view),
 
     # rest-auth
+    # NOTE: first defined first served order
+    url(r'^rest-auth/login/$', LoginViewCustom.as_view(), name='rest_login'),
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
     url(r'^rest-auth/google/$', GoogleLogin.as_view(), name='google_login'),

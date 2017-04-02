@@ -205,7 +205,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # https://django-rest-swagger.readthedocs.io/en/latest/settings/
 SWAGGER_SETTINGS = {
-    'USE_SESSION_AUTH': True,
+    'USE_SESSION_AUTH': False,
     'SECURITY_DEFINITIONS': {
         # 'basic': {
         #     'type': 'basic'
@@ -231,8 +231,8 @@ SWAGGER_SETTINGS = {
 # http://www.django-rest-framework.org/tutorial/5-relationships-and-hyperlinked-apis/
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
+        #'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication'
     ),
     'DEFAULT_PERMISSION_CLASSES': (
@@ -263,7 +263,7 @@ SENDGRID_API_KEY = os.environ['SENDGRID_API_KEY']
 SITE_ID = 1
 
 REST_USE_JWT = False
-REST_SESSION_LOGIN = True  # doesn't seem to harm anything
+REST_SESSION_LOGIN = False  # 
 
 # ”username” | “email” | “username_email”
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
