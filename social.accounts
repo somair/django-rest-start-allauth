@@ -1,8 +1,0 @@
-Google
-ID: 271472624096-a6fcotk0tni64k400hlg4va5i9ebdhos.apps.googleusercontent.com
-Secret: fxdTHsmBe76LywGS_MN1w01R
-Authorized Javascript Origins: http://127.0.0.1:8000
-Authorized Redirect Uris: http://127.0.0.1:8000/accounts/google/login/callback/
-
-sendgrid: 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
-
