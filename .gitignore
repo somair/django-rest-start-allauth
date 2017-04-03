@@ -4,4 +4,3 @@ staticfiles
 *.sqlite3
 .env
 temp
-social.accounts
