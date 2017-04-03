@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 import os
 import dj_database_url
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -25,13 +24,11 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 # The secret key must be a large random value and it must be kept secret.
 try:
     SECRET_KEY = os.environ['SECRET_KEY']
-    # print('SECRET_KEY: ' + SECRET_KEY)
 except KeyError:
     raise Exception('Please set the environment variable SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG') == 'True'
-# print('DEBUG: ' + str(DEBUG))
+DEBUG = os.environ.get('DEBUG', False) == 'True'
 
 # Application definition
 
@@ -179,7 +176,6 @@ USE_TZ = True
 # dj_database_url.config(default='postgres://user:password@host:port/database')
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
-print('Database Engine: ' + DATABASES['default']['ENGINE'])
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -263,7 +259,7 @@ SENDGRID_API_KEY = os.environ['SENDGRID_API_KEY']
 SITE_ID = 1
 
 REST_USE_JWT = False
-REST_SESSION_LOGIN = False  # 
+REST_SESSION_LOGIN = False #
 
 # ”username” | “email” | “username_email”
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
@@ -276,3 +272,10 @@ LOGIN_REDIRECT_URL = '/'
 SOCIALACCOUNT_EMAIL_VERIFICATION = "none"
 SOCIALACCOUNT_EMAIL_REQUIRED = True
 SOCIALACCOUNT_QUERY_EMAIL = True
+
+# output settings to console
+print('BASE_DIR: ' + BASE_DIR)
+print('PROJECT_ROOT : ' + PROJECT_ROOT)
+print('SECRET_KEY: ' + SECRET_KEY)
+print('DEBUG: ' + str(DEBUG))
+print('Database Engine: ' + DATABASES['default']['ENGINE'])
